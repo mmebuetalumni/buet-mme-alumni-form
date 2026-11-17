@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MME, BUET Alumni Information Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17212B;
+    --ink-soft:#3A4855;
+    --muted:#6B7883;
+    --line:#DDE1E5;
+    --line-soft:#E9ECEF;
+    --paper:#ECEEF0;
+    --card:#FFFFFF;
+    --copper:#A56A3E;
+    --copper-dark:#89552F;
+    --copper-tint:rgba(165,106,62,0.14);
+    --steel:#35617F;
+    --danger:#B23B3B;
+    --ok:#3E7A5A;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+    font-size:15px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- Header ---------- */
+  .masthead{
+    background:linear-gradient(160deg,#1c2833 0%,#141d26 100%);
+    color:#fff;
+    padding:38px 24px 34px;
+    border-bottom:3px solid var(--copper);
+  }
+  .masthead-inner{max-width:820px;margin:0 auto;}
+  .masthead h1{
+    font-family:"Archivo",sans-serif;
+    font-weight:700;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.05;
+    letter-spacing:-.01em;
+    margin:0 0 12px;
+  }
+  .masthead p{
+    color:#AEBAC4;
+    max-width:60ch;
+    margin:0;
+    font-size:15px;
+  }
+
+  /* ---------- Layout ---------- */
+  .wrap{max-width:820px;margin:0 auto;padding:28px 24px 80px;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:8px;
+    box-shadow:0 1px 2px rgba(20,29,38,.04),0 8px 24px rgba(20,29,38,.05);
+    overflow:hidden;
+  }
+  .intro{
+    padding:20px 30px;
+    border-bottom:1px solid var(--line-soft);
+    background:#FBFCFC;
+    color:var(--ink-soft);
+    font-size:13.5px;
+  }
+  .intro strong{color:var(--ink);font-weight:600;}
+  .intro p{margin:0;}
+  .intro p + p{margin-top:8px;}
+  .intro a{color:var(--copper-dark);font-weight:600;text-underline-offset:2px;}
+  .intro a:hover{color:var(--copper);}
+  .req-key{color:var(--copper);font-family:"IBM Plex Mono",monospace;}
+
+  /* ---------- Sections ---------- */
+  .section{padding:26px 30px 30px;border-bottom:1px solid var(--line-soft);}
+  .section:last-of-type{border-bottom:none;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 20px;}
+  .sec-idx{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:13px;
+    color:var(--copper);
+    font-weight:500;
+    padding-top:2px;
+  }
+  .sec-title{
+    font-family:"Archivo",sans-serif;
+    font-weight:600;
+    font-size:18px;
+    letter-spacing:-.005em;
+    margin:0;
+    color:var(--ink);
+  }
+  .sec-note{
+    display:block;
+    font-family:"IBM Plex Sans",sans-serif;
+    font-weight:400;
+    font-size:12.5px;
+    color:var(--muted);
+    margin-top:3px;
+  }
+
+  /* ---------- Grid + fields ---------- */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;}
+  .field.full{grid-column:1 / -1;}
+  label{
+    display:block;
+    font-size:13px;
+    font-weight:500;
+    color:var(--ink-soft);
+    margin:0 0 6px;
+    letter-spacing:.005em;
+  }
+  .req{color:var(--copper);font-weight:600;}
+  .hint{color:var(--muted);font-weight:400;font-size:12px;}
+  input[type=text],input[type=email],input[type=tel],input[type=url],input[type=date],input[type=number],select,textarea{
+    width:100%;
+    font-family:inherit;
+    font-size:14.5px;
+    color:var(--ink);
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:9px 11px;
+    transition:border-color .15s ease,box-shadow .15s ease;
+  }
+  textarea{resize:vertical;min-height:64px;line-height:1.45;}
+  select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%236B7883' stroke-width='1.5' stroke-linecap='round'/></svg>");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer;}
+  input:focus,select:focus,textarea:focus{
+    outline:none;
+    border-color:var(--copper);
+    box-shadow:0 0 0 3px var(--copper-tint);
+  }
+  input.invalid,select.invalid,textarea.invalid{border-color:var(--danger);}
+  /* phone number: country-code picker joined to the number box */
+  .phone{display:flex;}
+  .phone .cc{
+    position:relative;flex:none;min-width:88px;
+    display:flex;align-items:center;
+    padding:0 30px 0 11px;
+    font-size:14.5px;color:var(--ink);
+    background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%236B7883' stroke-width='1.5' stroke-linecap='round'/></svg>") no-repeat right 11px center;
+    border:1px solid var(--line);border-radius:5px 0 0 5px;
+    transition:border-color .15s ease,box-shadow .15s ease;
+  }
+  /* the real dropdown sits invisibly on top of the "+880" label, so it opens the native country list */
+  .phone .cc select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;}
+  .phone .cc:focus-within{border-color:var(--copper);box-shadow:0 0 0 3px var(--copper-tint);z-index:1;}
+  .phone input[type=tel]{flex:1;min-width:0;margin-left:-1px;border-radius:0 5px 5px 0;}
+  .phone input[type=tel]:focus,.phone input.invalid{position:relative;z-index:1;}
+  .phone:has(input.invalid) .cc{border-color:var(--danger);}
+  .err{color:var(--danger);font-size:12px;margin-top:5px;display:none;}
+  .err.show{display:block;}
+
+  /* checkbox + radio groups */
+  .choice-row{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:2px;}
+  .choice{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-soft);cursor:pointer;font-weight:400;}
+  .choice input{width:16px;height:16px;accent-color:var(--copper);cursor:pointer;margin:0;}
+
+  /* ---------- Actions ---------- */
+  .actions{
+    padding:24px 30px;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:16px;
+    background:#FBFCFC;
+  }
+  .btn{
+    font-family:"IBM Plex Sans",sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    border:none;
+    border-radius:6px;
+    padding:11px 22px;
+    cursor:pointer;
+    transition:background .15s ease,transform .05s ease;
+  }
+  .btn-primary{background:var(--copper);color:#fff;}
+  .btn-primary:hover{background:var(--copper-dark);}
+  .btn-primary:active{transform:translateY(1px);}
+  .btn-link{
+    background:none;
+    border:none;
+    color:var(--steel);
+    font-weight:500;
+    font-size:14px;
+    cursor:pointer;
+    padding:6px 2px;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .btn-link:hover{color:var(--ink);}
+  .count-pill{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;
+    color:var(--muted);
+    margin-left:auto;
+  }
+
+
+  /* ---------- Toast ---------- */
+  .toast{
+    position:fixed;
+    left:50%;
+    bottom:28px;
+    transform:translateX(-50%) translateY(24px);
+    background:#17212B;
+    color:#fff;
+    padding:13px 20px;
+    border-radius:8px;
+    font-size:14px;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    box-shadow:0 10px 30px rgba(20,29,38,.28);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease,transform .25s ease;
+    z-index:50;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .toast .tick{width:18px;height:18px;border-radius:50%;background:var(--copper);display:flex;align-items:center;justify-content:center;flex:none;}
+  .toast .tick svg{display:block;}
+
+  .footnote{max-width:820px;margin:20px auto 0;padding:0 24px;color:var(--muted);font-size:12px;font-family:"IBM Plex Mono",monospace;}
+
+
+  /* conditional branches */
+  .branch{display:none;}
+  .branch.show{display:block;animation:reveal .28s ease;}
+  @keyframes reveal{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+  /* section 03: Master's / Ph.D. / other degrees / profession, separated by a light rule */
+  .part + .part{margin-top:22px;padding-top:20px;border-top:1px solid var(--line-soft);}
+  /* section 03: degrees added with "+ Add degree" */
+  .degree-entry{border:1px solid var(--line);border-radius:8px;padding:14px 16px 18px;margin:8px 0 14px;background:var(--card);}
+  .degree-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .degree-num{font-weight:600;font-size:14px;color:var(--ink);}
+  .remove-btn{background:none;border:none;padding:4px 2px;font:inherit;font-size:13px;color:var(--muted);text-decoration:underline;cursor:pointer;}
+  .remove-btn:hover{color:var(--danger);}
+  .add-btn{display:inline-flex;align-items:center;gap:8px;margin-top:4px;padding:9px 16px;font:inherit;font-size:14px;font-weight:600;color:var(--copper);background:transparent;border:1px dashed var(--copper);border-radius:6px;cursor:pointer;}
+  .add-btn:hover{background:var(--copper-tint);}
+  .add-btn span{font-size:18px;line-height:1;}
+  .add-btn:focus-visible,.remove-btn:focus-visible{outline:2px solid var(--copper);outline-offset:2px;}
+  .sub-grid{margin-top:14px;}
+  .seg{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--line);border-radius:7px;overflow:hidden;width:fit-content;max-width:100%;}
+  .seg label{margin:0;cursor:pointer;}
+  .seg input{position:absolute;opacity:0;width:0;height:0;}
+  .seg span{
+    display:block;padding:10px 22px;font-size:14px;font-weight:500;color:var(--ink-soft);
+    background:#fff;border-right:1px solid var(--line);transition:background .12s ease,color .12s ease;
+  }
+  .seg label:last-child span{border-right:none;}
+  .seg input:checked + span{background:var(--copper);color:#fff;}
+  .seg input:focus-visible + span{box-shadow:inset 0 0 0 2px var(--copper-tint);}
+
+  @media (max-width:640px){
+    .grid{grid-template-columns:1fr;}
+    .section{padding:22px 20px 24px;}
+    .intro,.actions{padding-left:20px;padding-right:20px;}
+    .masthead{padding:30px 20px 28px;}
+    .seg.seg-stack{flex-direction:column;width:100%;}
+    .seg.seg-stack span{border-right:none;border-bottom:1px solid var(--line);}
+    .seg.seg-stack label:last-child span{border-bottom:none;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <h1>MME, BUET Alumni Information Form</h1>
+    <p>Your journey inspires us. The information you share here helps shape MME's future. Together, we hope to take the department to its next level of impact.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <div class="intro">
+      <p>Fields marked <span class="req-key">*</span> are required; fill in the rest as it applies to you. Your information is kept for departmental use only.</p>
+      <p>If you have any questions, difficulties or concerns, please contact us at <a href="mailto:mmebuetalumnirecords@gmail.com">mmebuetalumnirecords@gmail.com</a>.</p>
+    </div>
+
+    <!-- 01 Personal information & contact details (former Personal, Contact and Family sections, merged) -->
+    <div class="section">
+      <div class="sec-head">
+        <span class="sec-idx">01</span>
+        <h3 class="sec-title">Personal Information and Contact Details</h3>
+      </div>
+      <div class="grid">
+        <div class="field full">
+          <label for="fullName">Full name <span class="req">*</span></label>
+          <input type="text" id="fullName" autocomplete="name" placeholder="e.g. Ayesha Rahman">
+          <div class="err" id="err-fullName">Please enter your full name.</div>
+        </div>
+        <div class="field">
+          <label for="gender">Gender</label>
+          <select id="gender">
+            <option value="">Select…</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="bloodGroup">Blood group</label>
+          <select id="bloodGroup">
+            <option value="">Select…</option>
+            <option>A+</option><option>A−</option>
+            <option>B+</option><option>B−</option>
+            <option>AB+</option><option>AB−</option>
+            <option>O+</option><option>O−</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="email">Email <span class="req">*</span></label>
+          <input type="email" id="email" autocomplete="email" placeholder="name@example.com">
+          <div class="err" id="err-email">Please enter a valid email address.</div>
+        </div>
+        <div class="field">
+          <label for="mobile">Mobile number <span class="req">*</span></label>
+          <div class="phone">
+            <div class="cc">
+              <span id="mobileCodeShow" aria-hidden="true">+880</span>
+              <select id="mobileCode" class="cc-select" aria-label="Country code for mobile number"></select>
+            </div>
+            <input type="tel" id="mobile" autocomplete="tel-national" placeholder="1XXX-XXXXXX">
+          </div>
+          <div class="err" id="err-mobile">Please enter your mobile number.</div>
+        </div>
+        <div class="field full">
+          <label id="lbl-whatsappSame">WhatsApp number same as mobile number <span class="req">*</span></label>
+          <div class="seg" id="whatsappSame" role="radiogroup" aria-labelledby="lbl-whatsappSame">
+            <label><input type="radio" name="whatsappSame" value="Yes"><span>Yes</span></label>
+            <label><input type="radio" name="whatsappSame" value="No"><span>No</span></label>
+            <label><input type="radio" name="whatsappSame" value="Not available"><span>Not available</span></label>
+          </div>
+          <div class="err" id="err-whatsappSame">Please choose an option.</div>
+          <!-- shown only when the answer is "No" -->
+          <div class="branch" id="branchWhatsapp">
+            <div class="grid sub-grid">
+              <div class="field">
+                <label for="whatsapp">WhatsApp number <span class="req">*</span></label>
+                <div class="phone">
+                  <div class="cc">
+                    <span id="whatsappCodeShow" aria-hidden="true">+880</span>
+                    <select id="whatsappCode" class="cc-select" aria-label="Country code for WhatsApp number"></select>
+                  </div>
+                  <input type="tel" id="whatsapp" autocomplete="tel-national" placeholder="1XXX-XXXXXX">
+                </div>
+                <div class="err" id="err-whatsapp">Please enter your WhatsApp number.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field full">
+          <label for="linkedin">LinkedIn / profile URL</label>
+          <input type="url" id="linkedin" placeholder="https://linkedin.com/in/…">
+        </div>
+        <div class="field">
+          <label for="fatherName">Father's name</label>
+          <input type="text" id="fatherName" placeholder="Full name">
+        </div>
+        <div class="field">
+          <label for="fatherAffiliation">Father's affiliation / occupation</label>
+          <input type="text" id="fatherAffiliation" placeholder="e.g. Professor, Univ. of Dhaka">
+        </div>
+        <div class="field">
+          <label for="motherName">Mother's name</label>
+          <input type="text" id="motherName" placeholder="Full name">
+        </div>
+        <div class="field">
+          <label for="motherAffiliation">Mother's affiliation / occupation</label>
+          <input type="text" id="motherAffiliation" placeholder="e.g. Physician, Homemaker">
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 Degrees from MME, BUET -->
+    <div class="section">
+      <div class="sec-head">
+        <span class="sec-idx">02</span>
+        <h3 class="sec-title">Degrees from MME, BUET</h3>
+      </div>
+      <div class="field full">
+        <label id="lbl-degreesHere">Degree(s) earned here <span class="req">*</span></label>
+        <div class="seg seg-stack" id="degreesHere" role="radiogroup" aria-labelledby="lbl-degreesHere">
+          <label><input type="radio" name="degreesHere" value="Only B.Sc."><span>Only B.Sc.</span></label>
+          <label><input type="radio" name="degreesHere" value="Only M.Sc."><span>Only M.Sc.</span></label>
+          <label><input type="radio" name="degreesHere" value="Both B.Sc. and M.Sc."><span>Both B.Sc. and M.Sc.</span></label>
+        </div>
+        <div class="err" id="err-degreesHere">Please choose the degree(s) you earned here.</div>
+      </div>
+
+      <!-- B.Sc. details: shown for "Only B.Sc." and "Both B.Sc. and M.Sc." -->
+      <div class="branch" id="branchBsc">
+        <div class="grid sub-grid">
+          <div class="field">
+            <label for="bscStudentId">B.Sc. student ID <span class="req">*</span></label>
+            <input type="text" id="bscStudentId" placeholder="e.g. 1409001">
+            <div class="err" id="err-bscStudentId">Please enter your B.Sc. student ID.</div>
+          </div>
+          <div class="field">
+            <label for="bscYear">Year of B.Sc. graduation</label>
+            <input type="text" id="bscYear" inputmode="numeric" maxlength="4" placeholder="e.g. 2019">
+          </div>
+          <div class="field full">
+            <label for="bscThesis">Undergraduate thesis field <span class="req">*</span></label>
+            <select id="bscThesis" class="thesis-field"><option value="">Select…</option></select>
+            <div class="err" id="err-bscThesis">Please select your thesis field.</div>
+          </div>
+          <div class="field full branch" id="bscThesisOtherWrap">
+            <label for="bscThesisOther">Please specify your undergraduate thesis field <span class="req">*</span></label>
+            <input type="text" id="bscThesisOther" placeholder="e.g. keywords of your thesis field or topic">
+            <div class="err" id="err-bscThesisOther">Please specify your thesis field.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M.Sc. details: shown for "Only M.Sc." and "Both B.Sc. and M.Sc." (the first three fields only for "Only M.Sc.") -->
+      <div class="branch" id="branchMsc">
+        <div class="grid sub-grid">
+          <!-- shown only for "Only M.Sc." (B.Sc. earned elsewhere) -->
+          <div class="field branch msc-only">
+            <label for="bscUniversity">B.Sc. university <span class="req">*</span></label>
+            <input type="text" id="bscUniversity" placeholder="e.g. University of Dhaka">
+            <div class="err" id="err-bscUniversity">Please enter your B.Sc. university.</div>
+          </div>
+          <div class="field branch msc-only">
+            <label for="bscDepartment">B.Sc. department <span class="req">*</span></label>
+            <input type="text" id="bscDepartment" placeholder="e.g. Physics">
+            <div class="err" id="err-bscDepartment">Please enter your B.Sc. department.</div>
+          </div>
+          <div class="field full branch msc-only">
+            <label id="lbl-mscDegree">M.Sc. degree <span class="req">*</span></label>
+            <div class="seg seg-stack" id="mscDegree" role="radiogroup" aria-labelledby="lbl-mscDegree">
+              <label><input type="radio" name="mscDegree" value="M.Sc. in Materials Science"><span>M.Sc. in Materials Science</span></label>
+              <label><input type="radio" name="mscDegree" value="M.Sc. in MME"><span>M.Sc. in MME</span></label>
+            </div>
+            <div class="err" id="err-mscDegree">Please choose your M.Sc. degree.</div>
+          </div>
+          <div class="field">
+            <label for="mscStudentId">M.Sc. student ID <span class="req" id="mscStudentIdReq">*</span></label>
+            <input type="text" id="mscStudentId">
+            <div class="err" id="err-mscStudentId">Please enter your M.Sc. student ID.</div>
+          </div>
+          <div class="field">
+            <label for="mscYear">Year of M.Sc. completion</label>
+            <input type="text" id="mscYear" inputmode="numeric" maxlength="4" placeholder="e.g. 2021">
+          </div>
+          <div class="field full">
+            <label for="mscThesis">Master's thesis field <span class="req">*</span></label>
+            <select id="mscThesis" class="thesis-field"><option value="">Select…</option></select>
+            <div class="err" id="err-mscThesis">Please select your thesis field.</div>
+          </div>
+          <div class="field full branch" id="mscThesisOtherWrap">
+            <label for="mscThesisOther">Please specify your master's thesis field <span class="req">*</span></label>
+            <input type="text" id="mscThesisOther" placeholder="e.g. keywords of your thesis field or topic">
+            <div class="err" id="err-mscThesisOther">Please specify your thesis field.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 Other degrees and current employment -->
+    <div class="section">
+      <div class="sec-head">
+        <span class="sec-idx">03</span>
+        <h3 class="sec-title">Other Degrees and Current Employment</h3>
+      </div>
+
+      <!-- one degree; the script copies this for each "+ Add degree" click ({id} and {n} are filled in) -->
+      <template id="degreeTemplate">
+        <div class="degree-entry" id="{id}">
+          <div class="degree-head">
+            <span class="degree-num">Degree {n}</span>
+            <button type="button" class="remove-btn">Remove</button>
+          </div>
+          <div class="grid">
+            <div class="field">
+              <label for="{id}Type">Degree <span class="req">*</span></label>
+              <select id="{id}Type">
+                <option value="">Select…</option>
+                <option>Master's (M.Sc. / M.S.)</option>
+                <option>Ph.D.</option>
+                <option>MBA</option>
+                <option>Others</option>
+              </select>
+              <div class="err" id="err-{id}Type">Please select the degree.</div>
+            </div>
+            <div class="field branch" id="{id}TypeOtherWrap">
+              <label for="{id}TypeOther">Please specify the degree <span class="req">*</span></label>
+              <input type="text" id="{id}TypeOther" placeholder="e.g. M.Phil.">
+              <div class="err" id="err-{id}TypeOther">Please specify the degree.</div>
+            </div>
+          </div>
+          <!-- shown once a degree is chosen -->
+          <div class="branch" id="{id}Details">
+            <div class="grid sub-grid">
+              <div class="field full">
+                <label id="lbl-{id}Status">Status <span class="req">*</span></label>
+                <div class="seg" role="radiogroup" aria-labelledby="lbl-{id}Status">
+                  <label><input type="radio" name="{id}Status" value="Ongoing"><span>Ongoing</span></label>
+                  <label><input type="radio" name="{id}Status" value="Completed"><span>Completed</span></label>
+                </div>
+                <div class="err" id="err-{id}Status">Please choose Ongoing or Completed.</div>
+              </div>
+              <div class="field">
+                <label for="{id}University">University <span class="req">*</span></label>
+                <input type="text" id="{id}University" placeholder="Name of the university">
+                <div class="err" id="err-{id}University">Please enter the university.</div>
+              </div>
+              <div class="field">
+                <label for="{id}Department">Department <span class="req">*</span></label>
+                <input type="text" id="{id}Department" placeholder="e.g. Materials Engineering">
+                <div class="err" id="err-{id}Department">Please enter the department.</div>
+              </div>
+              <div class="field">
+                <label for="{id}City">City <span class="req">*</span></label>
+                <input type="text" id="{id}City" placeholder="Name of the city">
+                <div class="err" id="err-{id}City">Please enter the city.</div>
+              </div>
+              <div class="field">
+                <label for="{id}Country">Country <span class="req">*</span></label>
+                <select id="{id}Country"><option value="">Select…</option></select>
+                <div class="err" id="err-{id}Country">Please select the country.</div>
+              </div>
+              <div class="field full">
+                <label for="{id}Research">Research area / specialization <span class="req">*</span></label>
+                <input type="text" id="{id}Research" placeholder="e.g. Corrosion and electrochemistry">
+                <div class="err" id="err-{id}Research">Please enter your research area / specialization.</div>
+              </div>
+              <div class="field">
+                <label for="{id}Supervisor">Supervisor's name <span class="req">*</span></label>
+                <input type="text" id="{id}Supervisor" placeholder="e.g. Prof. Dr. …">
+                <div class="err" id="err-{id}Supervisor">Please enter the supervisor's name.</div>
+              </div>
+              <div class="field">
+                <label for="{id}SupervisorEmail">Supervisor's email</label>
+                <input type="email" id="{id}SupervisorEmail" placeholder="name@university.edu">
+                <div class="err" id="err-{id}SupervisorEmail">Please enter a valid email address.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- Other degrees: Yes/No first; "Yes" opens the degree list, added one at a time with "+ Add degree" -->
+      <div class="part">
+        <div class="field full">
+          <label id="lbl-hasOtherDegrees">Other degrees (ongoing or completed) <span class="req">*</span></label>
+          <div class="seg" id="hasOtherDegrees" role="radiogroup" aria-labelledby="lbl-hasOtherDegrees">
+            <label><input type="radio" name="hasOtherDegrees" value="Yes"><span>Yes</span></label>
+            <label><input type="radio" name="hasOtherDegrees" value="No"><span>No</span></label>
+          </div>
+          <div class="err" id="err-hasOtherDegrees">Please choose Yes or No.</div>
+        </div>
+        <div class="branch" id="branch-hasOtherDegrees">
+          <div class="field full sub-grid">
+            <div id="degreeList" role="group" aria-labelledby="lbl-hasOtherDegrees"></div>
+            <button type="button" class="add-btn" id="addDegreeBtn"><span aria-hidden="true">+</span> Add degree</button>
+            <div class="err" id="err-degreeList">Please add at least one degree, or choose No above.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Current employment (in Bangladesh or any other country): details required when "Yes" -->
+      <div class="part">
+        <div class="field full">
+          <label id="lbl-currentlyEmployed">Currently employed <span class="req">*</span></label>
+          <div class="seg" id="currentlyEmployed" role="radiogroup" aria-labelledby="lbl-currentlyEmployed">
+            <label><input type="radio" name="currentlyEmployed" value="Yes"><span>Yes</span></label>
+            <label><input type="radio" name="currentlyEmployed" value="No"><span>No</span></label>
+          </div>
+          <div class="err" id="err-currentlyEmployed">Please choose Yes or No.</div>
+        </div>
+        <div class="branch" id="branch-currentlyEmployed">
+          <div class="grid sub-grid">
+            <div class="field">
+              <label for="jobProfession">Profession <span class="req">*</span></label>
+              <select id="jobProfession">
+                <option value="">Select…</option>
+                <option>Academia / Faculty</option>
+                <option>Government / Public sector</option>
+                <option>Postdoctoral researcher</option>
+                <option>Industry / Manufacturing</option>
+                <option>Research &amp; Development</option>
+                <option>Entrepreneurship / Business</option>
+                <option>Others</option>
+              </select>
+              <div class="err" id="err-jobProfession">Please select your profession.</div>
+            </div>
+            <!-- shown right after Profession only when "Others" is chosen (beside it on wide screens, below it on phones) -->
+            <div class="field branch" id="jobProfessionOtherWrap">
+              <label for="jobProfessionOther">Please specify your profession <span class="req">*</span></label>
+              <input type="text" id="jobProfessionOther" placeholder="e.g. Consultant">
+              <div class="err" id="err-jobProfessionOther">Please specify your profession.</div>
+            </div>
+            <div class="field">
+              <label for="jobDesignation">Designation <span class="req">*</span></label>
+              <input type="text" id="jobDesignation" placeholder="Your role / title">
+              <div class="err" id="err-jobDesignation">Please enter your designation.</div>
+            </div>
+            <div class="field full">
+              <label for="jobOrg">Organization <span class="req">*</span></label>
+              <input type="text" id="jobOrg" placeholder="Employer / institution">
+              <div class="err" id="err-jobOrg">Please enter the organization.</div>
+            </div>
+            <div class="field">
+              <label for="jobCity">City <span class="req">*</span></label>
+              <input type="text" id="jobCity" placeholder="Name of the city">
+              <div class="err" id="err-jobCity">Please enter the city.</div>
+            </div>
+            <div class="field">
+              <label for="jobCountry">Country <span class="req">*</span></label>
+              <select id="jobCountry" class="country-select"><option value="">Select…</option></select>
+              <div class="err" id="err-jobCountry">Please select the country.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 Support for departmental development -->
+    <div class="section">
+      <div class="sec-head">
+        <span class="sec-idx">04</span>
+        <h3 class="sec-title">Support for Departmental Development</h3>
+      </div>
+      <div class="grid">
+        <!-- 1) areas, including "Other" -->
+        <div class="field full">
+          <label id="lbl-devAreas">Areas in which you or your connections can be helpful in the department's development <span class="req">*</span></label>
+          <div class="choice-row" id="devAreas" role="group" aria-labelledby="lbl-devAreas">
+            <label class="choice"><input type="checkbox" value="Industry collaboration"> Industry collaboration</label>
+            <label class="choice"><input type="checkbox" value="Research funding and grants"> Research funding and grants</label>
+            <label class="choice"><input type="checkbox" value="Scholarships and endowments"> Scholarships and endowments</label>
+            <label class="choice"><input type="checkbox" value="Laboratory equipment or donations"> Laboratory equipment or donations</label>
+            <label class="choice"><input type="checkbox" value="Internship and placement opportunities"> Internship and placement opportunities</label>
+            <label class="choice"><input type="checkbox" value="Professional and alumni networks"> Professional and alumni networks</label>
+            <label class="choice"><input type="checkbox" value="Other" id="devAreaOtherTick"> Other</label>
+          </div>
+          <div class="err" id="err-devAreas">Please tick at least one area.</div>
+        </div>
+        <!-- 2) shown and required only when "Other" is ticked -->
+        <div class="field full branch" id="devAreasOtherWrap">
+          <label for="devAreasOther">Please specify <span class="req">*</span></label>
+          <textarea id="devAreasOther" rows="2" placeholder="e.g. Introducing the department to a government agency, connecting the department with a foreign university, sponsoring a student event, donating books or software"></textarea>
+          <div class="err" id="err-devAreasOther">Please specify how you can contribute.</div>
+        </div>
+        <!-- 3) open to everyone -->
+        <div class="field full">
+          <label for="devBeneficial">Please specify any connection(s) that may be beneficial for the department's development</label>
+          <textarea id="devBeneficial" class="fit-example" rows="2" placeholder="e.g. A contact in a ministry, a sponsor for research funds, a company that could donate lab equipment"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="submitBtn">Submit alumni record</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">
+  <span class="tick"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  <span id="toastMsg">Record saved.</span>
+</div>
+
+<script>
+  /* Country dialing codes for the phone fields: [name, ISO code, calling code, local prefix, min, max mobile digits].
+     Generated from Google's libphonenumber data (libphonenumber-js 1.11.12). The local prefix (e.g. Bangladesh's
+     leading 0) is dropped when a number is saved; min/max catch numbers that are clearly too short or too long. */
+  var COUNTRIES = [
+    ["Afghanistan","AF","93","0",9,9],
+    ["Åland Islands","AX","358","0",6,10],
+    ["Albania","AL","355","0",9,9],
+    ["Algeria","DZ","213","0",9,9],
+    ["American Samoa","AS","1","1",10,10],
+    ["Andorra","AD","376","",6,9],
+    ["Angola","AO","244","",9,9],
+    ["Anguilla","AI","1","1",10,10],
+    ["Antigua & Barbuda","AG","1","1",10,10],
+    ["Argentina","AR","54","0",10,11],
+    ["Armenia","AM","374","0",8,8],
+    ["Aruba","AW","297","",7,7],
+    ["Ascension Island","AC","247","",5,5],
+    ["Australia","AU","61","0",9,9],
+    ["Austria","AT","43","0",7,13],
+    ["Azerbaijan","AZ","994","0",9,9],
+    ["Bahamas","BS","1","1",10,10],
+    ["Bahrain","BH","973","",8,8],
+    ["Bangladesh","BD","880","0",10,10],
+    ["Barbados","BB","1","1",10,10],
+    ["Belarus","BY","375","8",9,9],
+    ["Belgium","BE","32","0",9,9],
+    ["Belize","BZ","501","",7,7],
+    ["Benin","BJ","229","",8,8],
+    ["Bermuda","BM","1","1",10,10],
+    ["Bhutan","BT","975","",8,8],
+    ["Bolivia","BO","591","0",8,8],
+    ["Bosnia & Herzegovina","BA","387","0",8,9],
+    ["Botswana","BW","267","",8,8],
+    ["Brazil","BR","55","0",10,11],
+    ["British Indian Ocean Territory","IO","246","",7,7],
+    ["British Virgin Islands","VG","1","1",10,10],
+    ["Brunei","BN","673","",7,7],
+    ["Bulgaria","BG","359","0",8,9],
+    ["Burkina Faso","BF","226","",8,8],
+    ["Burundi","BI","257","",8,8],
+    ["Cambodia","KH","855","0",8,9],
+    ["Cameroon","CM","237","",9,9],
+    ["Canada","CA","1","1",10,10],
+    ["Cape Verde","CV","238","",7,7],
+    ["Caribbean Netherlands","BQ","599","",7,7],
+    ["Cayman Islands","KY","1","1",10,10],
+    ["Central African Republic","CF","236","",8,8],
+    ["Chad","TD","235","",8,8],
+    ["Chile","CL","56","",9,9],
+    ["China","CN","86","0",11,11],
+    ["Christmas Island","CX","61","0",9,9],
+    ["Cocos (Keeling) Islands","CC","61","0",9,9],
+    ["Colombia","CO","57","0",10,10],
+    ["Comoros","KM","269","",7,7],
+    ["Congo (DRC)","CD","243","0",7,9],
+    ["Congo (Republic)","CG","242","",9,9],
+    ["Cook Islands","CK","682","",5,5],
+    ["Costa Rica","CR","506","",8,8],
+    ["Côte d’Ivoire","CI","225","",10,10],
+    ["Croatia","HR","385","0",8,9],
+    ["Cuba","CU","53","0",8,8],
+    ["Curaçao","CW","599","",7,8],
+    ["Cyprus","CY","357","",8,8],
+    ["Czechia","CZ","420","",9,9],
+    ["Denmark","DK","45","",8,8],
+    ["Djibouti","DJ","253","",8,8],
+    ["Dominica","DM","1","1",10,10],
+    ["Dominican Republic","DO","1","1",10,10],
+    ["Ecuador","EC","593","0",9,9],
+    ["Egypt","EG","20","0",10,10],
+    ["El Salvador","SV","503","",8,8],
+    ["Equatorial Guinea","GQ","240","",9,9],
+    ["Eritrea","ER","291","0",7,7],
+    ["Estonia","EE","372","",7,8],
+    ["Eswatini","SZ","268","",8,8],
+    ["Ethiopia","ET","251","0",9,9],
+    ["Falkland Islands","FK","500","",5,5],
+    ["Faroe Islands","FO","298","",6,6],
+    ["Fiji","FJ","679","",7,7],
+    ["Finland","FI","358","0",6,10],
+    ["France","FR","33","0",9,9],
+    ["French Guiana","GF","594","0",9,9],
+    ["French Polynesia","PF","689","",8,8],
+    ["Gabon","GA","241","",7,8],
+    ["Gambia","GM","220","",7,7],
+    ["Georgia","GE","995","0",9,9],
+    ["Germany","DE","49","0",10,11],
+    ["Ghana","GH","233","0",9,9],
+    ["Gibraltar","GI","350","",8,8],
+    ["Greece","GR","30","",10,10],
+    ["Greenland","GL","299","",6,6],
+    ["Grenada","GD","1","1",10,10],
+    ["Guadeloupe","GP","590","0",9,9],
+    ["Guam","GU","1","1",10,10],
+    ["Guatemala","GT","502","",8,8],
+    ["Guernsey","GG","44","0",10,10],
+    ["Guinea","GN","224","",9,9],
+    ["Guinea-Bissau","GW","245","",9,9],
+    ["Guyana","GY","592","",7,7],
+    ["Haiti","HT","509","",8,8],
+    ["Honduras","HN","504","",8,8],
+    ["Hong Kong","HK","852","",8,8],
+    ["Hungary","HU","36","06",9,9],
+    ["Iceland","IS","354","",7,9],
+    ["India","IN","91","0",10,10],
+    ["Indonesia","ID","62","0",9,12],
+    ["Iran","IR","98","0",10,10],
+    ["Iraq","IQ","964","0",10,10],
+    ["Ireland","IE","353","0",9,9],
+    ["Isle of Man","IM","44","0",10,10],
+    ["Israel","IL","972","0",9,9],
+    ["Italy","IT","39","",9,10],
+    ["Jamaica","JM","1","1",10,10],
+    ["Japan","JP","81","0",10,10],
+    ["Jersey","JE","44","0",10,10],
+    ["Jordan","JO","962","0",9,9],
+    ["Kazakhstan","KZ","7","8",10,10],
+    ["Kenya","KE","254","0",9,9],
+    ["Kiribati","KI","686","0",8,8],
+    ["Kosovo","XK","383","0",8,8],
+    ["Kuwait","KW","965","",8,8],
+    ["Kyrgyzstan","KG","996","0",9,9],
+    ["Laos","LA","856","0",10,10],
+    ["Latvia","LV","371","",8,8],
+    ["Lebanon","LB","961","0",7,8],
+    ["Lesotho","LS","266","",8,8],
+    ["Liberia","LR","231","0",7,9],
+    ["Libya","LY","218","0",9,9],
+    ["Liechtenstein","LI","423","0",7,9],
+    ["Lithuania","LT","370","0",8,8],
+    ["Luxembourg","LU","352","",9,9],
+    ["Macao","MO","853","",8,8],
+    ["Madagascar","MG","261","0",9,9],
+    ["Malawi","MW","265","0",9,9],
+    ["Malaysia","MY","60","0",9,10],
+    ["Maldives","MV","960","",7,7],
+    ["Mali","ML","223","",8,8],
+    ["Malta","MT","356","",8,8],
+    ["Marshall Islands","MH","692","1",7,7],
+    ["Martinique","MQ","596","0",9,9],
+    ["Mauritania","MR","222","",8,8],
+    ["Mauritius","MU","230","",8,8],
+    ["Mayotte","YT","262","0",9,9],
+    ["Mexico","MX","52","",10,10],
+    ["Micronesia","FM","691","",7,7],
+    ["Moldova","MD","373","0",8,8],
+    ["Monaco","MC","377","0",8,9],
+    ["Mongolia","MN","976","0",8,8],
+    ["Montenegro","ME","382","0",8,8],
+    ["Montserrat","MS","1","1",10,10],
+    ["Morocco","MA","212","0",9,9],
+    ["Mozambique","MZ","258","",9,9],
+    ["Myanmar","MM","95","0",7,10],
+    ["Namibia","NA","264","0",9,9],
+    ["Nauru","NR","674","",7,7],
+    ["Nepal","NP","977","0",10,10],
+    ["Netherlands","NL","31","0",9,11],
+    ["New Caledonia","NC","687","",6,6],
+    ["New Zealand","NZ","64","0",8,10],
+    ["Nicaragua","NI","505","",8,8],
+    ["Niger","NE","227","",8,8],
+    ["Nigeria","NG","234","0",10,10],
+    ["Niue","NU","683","",4,7],
+    ["Norfolk Island","NF","672","",6,6],
+    ["North Korea","KP","850","0",10,10],
+    ["North Macedonia","MK","389","0",8,8],
+    ["Northern Mariana Islands","MP","1","1",10,10],
+    ["Norway","NO","47","",8,8],
+    ["Oman","OM","968","",8,8],
+    ["Pakistan","PK","92","0",10,10],
+    ["Palau","PW","680","",7,7],
+    ["Palestine","PS","970","0",9,9],
+    ["Panama","PA","507","",7,8],
+    ["Papua New Guinea","PG","675","",8,8],
+    ["Paraguay","PY","595","0",9,9],
+    ["Peru","PE","51","0",9,9],
+    ["Philippines","PH","63","0",10,10],
+    ["Poland","PL","48","",9,9],
+    ["Portugal","PT","351","",9,9],
+    ["Puerto Rico","PR","1","1",10,10],
+    ["Qatar","QA","974","",8,8],
+    ["Réunion","RE","262","0",9,9],
+    ["Romania","RO","40","0",9,9],
+    ["Russia","RU","7","8",10,10],
+    ["Rwanda","RW","250","0",9,9],
+    ["Samoa","WS","685","",7,10],
+    ["San Marino","SM","378","",8,8],
+    ["São Tomé & Príncipe","ST","239","",7,7],
+    ["Saudi Arabia","SA","966","0",9,9],
+    ["Senegal","SN","221","",9,9],
+    ["Serbia","RS","381","0",8,10],
+    ["Seychelles","SC","248","",7,7],
+    ["Sierra Leone","SL","232","0",8,8],
+    ["Singapore","SG","65","",8,8],
+    ["Sint Maarten","SX","1","1",10,10],
+    ["Slovakia","SK","421","0",9,9],
+    ["Slovenia","SI","386","0",8,8],
+    ["Solomon Islands","SB","677","",5,7],
+    ["Somalia","SO","252","0",7,9],
+    ["South Africa","ZA","27","0",5,9],
+    ["South Korea","KR","82","0",9,10],
+    ["South Sudan","SS","211","0",9,9],
+    ["Spain","ES","34","",9,9],
+    ["Sri Lanka","LK","94","0",9,9],
+    ["St. Barthélemy","BL","590","0",9,9],
+    ["St. Helena","SH","290","",5,5],
+    ["St. Kitts & Nevis","KN","1","1",10,10],
+    ["St. Lucia","LC","1","1",10,10],
+    ["St. Martin","MF","590","0",9,9],
+    ["St. Pierre & Miquelon","PM","508","0",6,9],
+    ["St. Vincent & Grenadines","VC","1","1",10,10],
+    ["Sudan","SD","249","0",9,9],
+    ["Suriname","SR","597","",7,7],
+    ["Svalbard & Jan Mayen","SJ","47","",8,8],
+    ["Sweden","SE","46","0",9,9],
+    ["Switzerland","CH","41","0",9,9],
+    ["Syria","SY","963","0",9,9],
+    ["Taiwan","TW","886","0",9,9],
+    ["Tajikistan","TJ","992","",9,9],
+    ["Tanzania","TZ","255","0",9,9],
+    ["Thailand","TH","66","0",9,9],
+    ["Timor-Leste","TL","670","",8,8],
+    ["Togo","TG","228","",8,8],
+    ["Tokelau","TK","690","",4,7],
+    ["Tonga","TO","676","",7,7],
+    ["Trinidad & Tobago","TT","1","1",10,10],
+    ["Tristan da Cunha","TA","290","",4,4],
+    ["Tunisia","TN","216","",8,8],
+    ["Türkiye","TR","90","0",10,10],
+    ["Turkmenistan","TM","993","8",8,8],
+    ["Turks & Caicos Islands","TC","1","1",10,10],
+    ["Tuvalu","TV","688","",6,7],
+    ["U.S. Virgin Islands","VI","1","1",10,10],
+    ["Uganda","UG","256","0",9,9],
+    ["Ukraine","UA","380","0",9,9],
+    ["United Arab Emirates","AE","971","0",9,9],
+    ["United Kingdom","GB","44","0",10,10],
+    ["United States","US","1","1",10,10],
+    ["Uruguay","UY","598","0",8,8],
+    ["Uzbekistan","UZ","998","",9,9],
+    ["Vanuatu","VU","678","",7,7],
+    ["Vatican City","VA","39","",9,10],
+    ["Venezuela","VE","58","0",10,10],
+    ["Vietnam","VN","84","0",9,9],
+    ["Wallis & Futuna","WF","681","",6,6],
+    ["Western Sahara","EH","212","0",9,9],
+    ["Yemen","YE","967","0",9,9],
+    ["Zambia","ZM","260","0",9,9],
+    ["Zimbabwe","ZW","263","0",9,9]
+  ];
+</script>
+<script>
+(function(){
+  "use strict";
+
+  // Field map drives both CSV export and record storage (id -> CSV header)
+  var FIELDS = [
+    ["submittedAt","Submitted At"],
+    ["fullName","Full Name"],
+    ["gender","Gender"],
+    ["bloodGroup","Blood Group"],
+    ["email","Email"],
+    ["mobile","Mobile"],
+    ["whatsappSame","WhatsApp Same as Mobile"],
+    ["whatsapp","WhatsApp Number"],
+    ["linkedin","LinkedIn/Profile"],
+    ["fatherName","Father's Name"],
+    ["fatherAffiliation","Father's Affiliation"],
+    ["motherName","Mother's Name"],
+    ["motherAffiliation","Mother's Affiliation"],
+    ["degreesHere","Degree(s) Earned Here"],
+    ["bscStudentId","B.Sc. Student ID"],
+    ["bscYear","B.Sc. Graduation Year"],
+    ["bscThesis","Undergraduate Thesis Field"],
+    ["bscThesisOther","Undergraduate Thesis Field (Other)"],
+    ["bscUniversity","B.Sc. University (Only M.Sc.)"],
+    ["bscDepartment","B.Sc. Department (Only M.Sc.)"],
+    ["mscDegree","M.Sc. Degree"],
+    ["mscStudentId","M.Sc. Student ID"],
+    ["mscYear","M.Sc. Completion Year"],
+    ["mscThesis","Master's Thesis Field"],
+    ["mscThesisOther","Master's Thesis Field (Other)"],
+    ["hasOtherDegrees","Other Degrees"],
+    ["__degrees__","Degree"],   // expands to "Degree 1", "Degree 1: Status", … for each added degree
+    ["currentlyEmployed","Currently Employed"],
+    ["jobProfession","Profession"],
+    ["jobProfessionOther","Profession (Other)"],
+    ["jobDesignation","Designation"],
+    ["jobOrg","Organization"],
+    ["jobCity","City of Employment"],
+    ["jobCountry","Country of Employment"],
+    ["devAreas","Support Areas"],
+    ["devAreasOther","Other Ways to Contribute"],
+    ["devBeneficial","Beneficial for Development"]
+  ];
+
+  // ===========================================================
+  //  PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BETWEEN THE QUOTES
+  //  (Deploy > New deployment > Web app, then copy the URL)
+  // ===========================================================
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxDG3lofPlDFY_ol0ufm8dyUH08jnQ7S85SG1nAPbQFxdZOhPvltCOEqfFf3wLSBqkU/exec";
+  // ===========================================================
+
+  var STORAGE_KEY = "mme_alumni_records";
+  var hasStorage = (typeof window !== "undefined" && window.storage && typeof window.storage.get === "function");
+  var memStore = [];
+
+  // Send one record to the Google Sheet.
+  async function sendToSheet(rec){
+    if(!SCRIPT_URL || SCRIPT_URL.indexOf("PASTE_YOUR") === 0){
+      console.warn("No Apps Script URL set — record not sent.");
+      return false;
+    }
+    try{
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(rec)
+      });
+      return true;
+    }catch(err){
+      console.error("Submission failed:", err);
+      return false;
+    }
+  }
+
+  // ---- storage helpers ----
+  async function loadRecords(){
+    if(hasStorage){
+      try{
+        var r = await window.storage.get(STORAGE_KEY);
+        return (r && r.value) ? JSON.parse(r.value) : [];
+      }catch(e){ return []; }
+    }
+    return memStore;
+  }
+  async function saveRecords(list){
+    if(hasStorage){
+      try{ await window.storage.set(STORAGE_KEY, JSON.stringify(list)); return true; }
+      catch(e){ return false; }
+    }
+    memStore = list; return true;
+  }
+
+  // ---- element helpers ----
+  function $(id){ return document.getElementById(id); }
+  function val(id){ var el=$(id); return el ? el.value.trim() : ""; }
+
+  // Thesis field options, shared by the undergraduate and master's dropdowns.
+  // Keep "Others" last: choosing it opens a box to type the field.
+  var THESIS_FIELDS = [
+    "Metals and alloys",
+    "Polymers and composites",
+    "Ceramics",
+    "Nanomaterials",
+    "Corrosion and surface engineering",
+    "Extractive metallurgy and mineral processing",
+    "Casting and solidification",
+    "Welding and joining",
+    "Energy materials",
+    "Electronic and magnetic materials",
+    "Biomaterials",
+    "Computational materials science",
+    "Materials characterization and failure analysis",
+    "Others"
+  ];
+  document.querySelectorAll("select.thesis-field").forEach(function(sel){
+    THESIS_FIELDS.forEach(function(t){
+      var o=document.createElement("option"); o.value=t; o.textContent=t; sel.appendChild(o);
+    });
+  });
+
+  // Which academic fields apply: ["bsc"], ["msc"], ["bsc","msc"] for Both, or [] if not answered
+  function degreePaths(){
+    var d = (document.querySelector('input[name="degreesHere"]:checked')||{}).value;
+    if(d==="Only B.Sc.") return ["bsc"];
+    if(d==="Only M.Sc.") return ["msc"];
+    if(d==="Both B.Sc. and M.Sc.") return ["bsc","msc"];
+    return [];
+  }
+
+  // ---- phone numbers: country code dropdown + number ----
+  var COUNTRY = {};   // ISO code -> [name, ISO, calling code, local prefix, min digits, max digits]
+  COUNTRIES.forEach(function(c){ COUNTRY[c[1]] = c; });
+  // listed first; Bangladesh is the default, the rest alphabetical
+  var COMMON_COUNTRIES = ["BD","AU","CA","CN","DE","JP","MY","QA","SA","SG","KR","TW","AE","GB","US"];
+  function addCountry(parent, c){
+    var o=document.createElement("option"); o.value=c[1]; o.textContent=c[0]+" (+"+c[2]+")"; parent.appendChild(o);
+  }
+  document.querySelectorAll("select.cc-select").forEach(function(sel){
+    var common=document.createElement("optgroup"); common.label="Common";
+    COMMON_COUNTRIES.forEach(function(iso){ addCountry(common, COUNTRY[iso]); });
+    var all=document.createElement("optgroup"); all.label="All countries";
+    COUNTRIES.forEach(function(c){ addCountry(all, c); });
+    sel.appendChild(common); sel.appendChild(all);
+  });
+  // show the chosen code (e.g. "+880") beside the number, with a fitting placeholder
+  function syncPhone(id){
+    var c = COUNTRY[$(id+"Code").value];
+    $(id+"CodeShow").textContent = "+"+c[2];
+    $(id).placeholder = c[1]==="BD" ? "1XXX-XXXXXX" : "Local number";
+  }
+  // Reads a phone field as digits only, dropping a country code typed again ("+880…", "00880…", "880…")
+  // and the local prefix (e.g. Bangladesh's leading 0), so 01711-000111 and +880 1711 000111 both give 1711000111.
+  function phoneInfo(id){
+    var c = COUNTRY[$(id+"Code").value], code = c[2], prefix = c[3];
+    var raw = val(id).replace(/[\s().\-]/g,"");
+    var digits = raw.replace(/\D/g,"");
+    var wrongCode = false;
+    if(/^(\+|00)/.test(raw)){
+      if(raw.charAt(0)!=="+") digits = digits.slice(2);            // "00880…" -> "880…"
+      if(digits.indexOf(code)===0) digits = digits.slice(code.length);
+      else if(digits) wrongCode = true;                              // e.g. "+1 415…" while +880 is chosen
+    } else if(digits.indexOf(code)===0 && digits.length > c[5]){
+      digits = digits.slice(code.length);                             // "880 1711…" typed without the +
+    }
+    if(prefix && digits.indexOf(prefix)===0 && digits.length > prefix.length) digits = digits.slice(prefix.length);
+    return { country:c, digits:digits, wrongCode:wrongCode };
+  }
+  // saved as "+880 1711000111"; the space keeps spreadsheets from turning it into a plain number
+  function phoneValue(id){
+    var p = phoneInfo(id);
+    return p.digits ? "+"+p.country[2]+" "+p.digits : "";
+  }
+  function phoneError(id, what){
+    if(!val(id)) return "Please enter your "+what+" number.";
+    var p = phoneInfo(id), code = "+"+p.country[2];
+    if(p.wrongCode) return "This number starts with a different country code. Choose that country from the list.";
+    if(p.digits.length < p.country[4]) return "This looks too short for a "+code+" number. Please check it.";
+    if(p.digits.length > p.country[5]) return "This looks too long for a "+code+" number. Please check it.";
+    return "";
+  }
+  ["mobile","whatsapp"].forEach(function(id){
+    syncPhone(id);
+    $(id+"Code").addEventListener("change", function(){ syncPhone(id); clearError(id); });
+  });
+
+  // ---- section 03: the Yes/No question and the details it requires when answered "Yes" ----
+  var YESNO_PARTS = {
+    currentlyEmployed: ["jobProfession","jobDesignation","jobOrg","jobCountry","jobCity"]
+  };
+  function answer(name){ return (document.querySelector('input[name="'+name+'"]:checked')||{}).value || ""; }
+
+  // ---- section 04: ticking "Other" makes the last box required ----
+  function otherAreaTicked(){ return $("devAreaOtherTick").checked; }
+
+  // Make a box tall enough to show its whole example text at any screen width (while empty and visible).
+  function fitExample(t){
+    if(!t.offsetParent || t.value) return;
+    var c = t.cloneNode(); c.removeAttribute("id"); c.value = t.placeholder; c.rows = 1;
+    c.style.height = "auto"; c.style.minHeight = "0"; c.style.visibility = "hidden";
+    t.parentNode.insertBefore(c, t.nextSibling);
+    t.style.minHeight = (c.scrollHeight + t.offsetHeight - t.clientHeight) + "px";
+    t.parentNode.removeChild(c);
+  }
+  function fitAllExamples(){ document.querySelectorAll("textarea.fit-example").forEach(fitExample); }
+  window.addEventListener("resize", fitAllExamples);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitAllExamples);
+  fitAllExamples();
+  // country dropdowns: same country list as the phone codes, Bangladesh first.
+  // (a dropdown can leave a country out with data-exclude="BD")
+  function fillCountries(sel){
+    var skip = sel.getAttribute("data-exclude") || "";
+    function add(parent, c){ var o=document.createElement("option"); o.value=c[0]; o.textContent=c[0]; parent.appendChild(o); }
+    var common=document.createElement("optgroup"); common.label="Common";
+    COMMON_COUNTRIES.forEach(function(iso){ if(iso!==skip) add(common, COUNTRY[iso]); });
+    var all=document.createElement("optgroup"); all.label="All countries";
+    COUNTRIES.forEach(function(c){ if(c[1]!==skip) add(all, c); });
+    sel.appendChild(common); sel.appendChild(all);
+  }
+  document.querySelectorAll("select.country-select").forEach(fillCountries);
+
+  // ---- section 02: three extra fields when only the M.Sc. was earned here ----
+  function onlyMsc(){ var p = degreePaths(); return p.length===1 && p[0]==="msc"; }
+
+  // ---- section 03: degrees added with "+ Add degree" (any number, any type) ----
+  var MAX_DEGREES = 3;   // most "other degrees" a person can add
+  var degreeCount = 0;   // keeps every degree's ids unique, even after one is removed
+  var DEGREE_REQUIRED = ["University","Department","Country","City","Supervisor"];
+  function degreeEntries(){ return Array.prototype.slice.call(document.querySelectorAll("#degreeList .degree-entry")); }
+  function renumberDegrees(){
+    degreeEntries().forEach(function(el, i){ el.querySelector(".degree-num").textContent = "Degree " + (i+1); });
+    updateAddBtn();
+  }
+  function updateAddBtn(){
+    var btn = $("addDegreeBtn");
+    if(!btn) return;
+    var full = degreeEntries().length >= MAX_DEGREES;
+    btn.disabled = full;
+    btn.style.opacity = full ? "0.45" : "";
+    btn.style.cursor  = full ? "not-allowed" : "";
+    btn.title = full ? "You can add up to " + MAX_DEGREES + " degrees." : "";
+  }
+  function updateDegree(id){
+    var type = val(id+"Type");
+    show($(id+"TypeOtherWrap"), type==="Others");
+    show($(id+"Details"), !!type);
+    if(type!=="Others") clearError(id+"TypeOther");
+    if(answer(id+"Status")) $("err-"+id+"Status").classList.remove("show");
+  }
+  function addDegree(){
+    if(degreeEntries().length >= MAX_DEGREES){ updateAddBtn(); return; }
+    var id = "deg" + (++degreeCount);
+    var html = $("degreeTemplate").innerHTML.replace(/\{id\}/g, id).replace(/\{n\}/g, degreeEntries().length + 1);
+    $("degreeList").insertAdjacentHTML("beforeend", html);
+    var entry = $(id);
+    fillCountries($(id+"Country"));
+    entry.querySelectorAll("input, select").forEach(function(el){
+      el.addEventListener("input", function(){ if(el.id) clearError(el.id); });
+      el.addEventListener("change", function(){ if(el.id) clearError(el.id); updateDegree(id); });
+    });
+    entry.querySelector(".remove-btn").addEventListener("click", function(){
+      entry.parentNode.removeChild(entry); renumberDegrees(); $("addDegreeBtn").focus();
+    });
+    updateDegree(id);
+    updateAddBtn();
+    $(id+"Type").focus();
+  }
+  $("addDegreeBtn").addEventListener("click", function(){ addDegree(); $("err-degreeList").classList.remove("show"); });
+  document.querySelectorAll('input[name="hasOtherDegrees"]').forEach(function(r){
+    r.addEventListener("change", function(){
+      if(answer("hasOtherDegrees")==="Yes" && !degreeEntries().length){ addDegree(); }
+    });
+  });
+
+  function collect(){
+    var rec = {};
+    rec.submittedAt = new Date().toISOString();
+    ["fullName","gender","bloodGroup","email","linkedin",
+     "fatherName","fatherAffiliation","motherName","motherAffiliation"]
+      .forEach(function(k){ rec[k] = val(k); });
+    // academic record: keep only the B.Sc. and/or M.Sc. fields that match the degree answer
+    var paths = degreePaths();
+    rec.degreesHere = (document.querySelector('input[name="degreesHere"]:checked')||{}).value || "";
+    ["StudentId","Year","Thesis","ThesisOther"].forEach(function(k){
+      rec["bsc"+k] = paths.indexOf("bsc")>-1 ? val("bsc"+k) : "";
+      rec["msc"+k] = paths.indexOf("msc")>-1 ? val("msc"+k) : "";
+    });
+    // the typed thesis field only counts when "Others" is chosen
+    if(rec.bscThesis!=="Others") rec.bscThesisOther = "";
+    if(rec.mscThesis!=="Others") rec.mscThesisOther = "";
+    // "Only M.Sc.": where the B.Sc. was earned, and which M.Sc. degree
+    var om = onlyMsc();
+    rec.bscUniversity = om ? val("bscUniversity") : "";
+    rec.bscDepartment = om ? val("bscDepartment") : "";
+    rec.mscDegree = om ? answer("mscDegree") : "";
+    // section 03: every added degree ("Others" is saved as the typed degree name)
+    rec.hasOtherDegrees = answer("hasOtherDegrees");
+    rec.otherDegrees = rec.hasOtherDegrees!=="Yes" ? [] : degreeEntries().map(function(entry){
+      var id = entry.id, type = val(id+"Type");
+      return {
+        degree: type==="Others" ? val(id+"TypeOther") : type,
+        status: answer(id+"Status"),
+        university: val(id+"University"),
+        department: val(id+"Department"),
+        country: val(id+"Country"),
+        city: val(id+"City"),
+        researchArea: val(id+"Research"),
+        supervisor: val(id+"Supervisor"),
+        supervisorEmail: val(id+"SupervisorEmail")
+      };
+    });
+    // checkboxes
+    var devA = [];
+    document.querySelectorAll("#devAreas input:checked").forEach(function(c){ devA.push(c.value); });
+    rec.devAreas = devA.join("; ");
+    rec.devAreasOther = otherAreaTicked() ? val("devAreasOther") : "";   // only while "Other" is ticked
+    rec.devBeneficial = val("devBeneficial");
+    // radios
+    function radio(name){ var el=document.querySelector('input[name="'+name+'"]:checked'); return el?el.value:""; }
+    // section 03: the Yes/No answers, plus details only for questions answered "Yes"
+    Object.keys(YESNO_PARTS).forEach(function(q){
+      rec[q] = radio(q);
+      YESNO_PARTS[q].forEach(function(id){ rec[id] = rec[q]==="Yes" ? val(id) : ""; });
+    });
+    rec.jobProfessionOther = rec.jobProfession==="Others" ? val("jobProfessionOther") : "";
+    // phone numbers, saved with their country code, e.g. "+880 1711000111"
+    rec.mobile = phoneValue("mobile");
+    // WhatsApp: "Yes" reuses the mobile number; "No" uses the number typed in; "Not available" leaves it empty
+    rec.whatsappSame = radio("whatsappSame");
+    rec.whatsapp = rec.whatsappSame === "Yes" ? rec.mobile : rec.whatsappSame === "No" ? phoneValue("whatsapp") : "";
+    return rec;
+  }
+
+  // ---- validation ----
+  function clearError(id){
+    var el=$(id); if(el) el.classList.remove("invalid");
+    var e=$("err-"+id); if(e) e.classList.remove("show");
+  }
+  function setError(id, msg){
+    var el=$(id); if(el) el.classList.add("invalid");
+    var e=$("err-"+id); if(e){ if(msg) e.textContent=msg; e.classList.add("show"); }
+  }
+  // required text boxes and dropdowns (errors clear as the user types or picks)
+  var REQUIRED_INPUTS = ["fullName","email","mobile","whatsapp",
+    "bscStudentId","bscThesis","bscThesisOther","mscStudentId","mscThesis","mscThesisOther"]
+    .concat(YESNO_PARTS.currentlyEmployed, ["jobProfessionOther","devAreasOther","bscUniversity","bscDepartment"]);
+
+  function validate(){
+    var ok = true;
+    REQUIRED_INPUTS.forEach(clearError);
+    $("err-whatsappSame").classList.remove("show");
+    $("err-degreesHere").classList.remove("show");
+    $("err-mscDegree").classList.remove("show");
+    degreeEntries().forEach(function(entry){
+      entry.querySelectorAll(".invalid").forEach(function(el){ el.classList.remove("invalid"); });
+      entry.querySelectorAll(".err.show").forEach(function(el){ el.classList.remove("show"); });
+    });
+    Object.keys(YESNO_PARTS).forEach(function(q){ $("err-"+q).classList.remove("show"); });
+    $("err-hasOtherDegrees").classList.remove("show");
+    $("err-degreeList").classList.remove("show");
+    if(!val("fullName")){ setError("fullName"); ok=false; }
+    var em = val("email");
+    if(!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){ setError("email"); ok=false; }
+    var mobileErr = phoneError("mobile","mobile");
+    if(mobileErr){ setError("mobile", mobileErr); ok=false; }
+    var waSame = (document.querySelector('input[name="whatsappSame"]:checked')||{}).value;
+    if(!waSame){ $("err-whatsappSame").classList.add("show"); ok=false; }
+    else if(waSame==="No"){
+      var waErr = phoneError("whatsapp","WhatsApp");
+      if(waErr){ setError("whatsapp", waErr); ok=false; }
+    }
+    // academic record: the degree answer, then the student ID and thesis field for each degree (years are not required)
+    var paths = degreePaths();
+    if(!paths.length){ $("err-degreesHere").classList.add("show"); ok=false; }
+    paths.forEach(function(path){
+      // the M.Sc. student ID is not required for "Both B.Sc. and M.Sc." (the B.Sc. ID still is)
+      var idRequired = !(path==="msc" && paths.length===2);
+      if(idRequired && !val(path+"StudentId")){ setError(path+"StudentId"); ok=false; }
+      if(!val(path+"Thesis")){ setError(path+"Thesis"); ok=false; }
+      else if(val(path+"Thesis")==="Others" && !val(path+"ThesisOther")){ setError(path+"ThesisOther"); ok=false; }
+    });
+    // section 03: every Yes/No needs an answer; a "Yes" makes all of its details required
+    Object.keys(YESNO_PARTS).forEach(function(q){
+      var a = answer(q);
+      if(!a){ $("err-"+q).classList.add("show"); ok=false; }
+      else if(a==="Yes"){
+        YESNO_PARTS[q].forEach(function(id){ if(!val(id)){ setError(id); ok=false; } });
+      }
+    });
+    if(answer("currentlyEmployed")==="Yes" && val("jobProfession")==="Others" && !val("jobProfessionOther")){
+      setError("jobProfessionOther"); ok=false;
+    }
+    if(!document.querySelector("#devAreas input:checked")){ $("err-devAreas").classList.add("show"); ok=false; }
+    if(otherAreaTicked() && !val("devAreasOther")){ setError("devAreasOther"); ok=false; }
+    // section 02, "Only M.Sc.": B.Sc. university, department and the M.Sc. degree
+    if(onlyMsc()){
+      ["bscUniversity","bscDepartment"].forEach(function(id){ if(!val(id)){ setError(id); ok=false; } });
+      if(!answer("mscDegree")){ $("err-mscDegree").classList.add("show"); ok=false; }
+    }
+    // section 03: "Other degrees" needs an answer; "Yes" needs at least one degree
+    var hasDeg = answer("hasOtherDegrees");
+    if(!hasDeg){ $("err-hasOtherDegrees").classList.add("show"); ok=false; }
+    else if(hasDeg==="Yes" && !degreeEntries().length){ $("err-degreeList").classList.add("show"); ok=false; }
+    // each added degree (supervisor's email is not required, but must look right if given)
+    if(hasDeg==="Yes") degreeEntries().forEach(function(entry){
+      var id = entry.id, type = val(id+"Type");
+      if(!type){ setError(id+"Type"); ok=false; return; }
+      if(type==="Others" && !val(id+"TypeOther")){ setError(id+"TypeOther"); ok=false; }
+      if(!answer(id+"Status")){ $("err-"+id+"Status").classList.add("show"); ok=false; }
+      DEGREE_REQUIRED.forEach(function(k){ if(!val(id+k)){ setError(id+k); ok=false; } });
+      if(!val(id+"Research")){ setError(id+"Research"); ok=false; }
+      var em = val(id+"SupervisorEmail");
+      if(em && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){ setError(id+"SupervisorEmail"); ok=false; }
+    });
+    return ok;
+  }
+
+  // clear inline errors as the user types
+  REQUIRED_INPUTS.forEach(function(id){
+    var el=$(id);
+    if(el){
+      el.addEventListener("input", function(){ clearError(id); });
+      el.addEventListener("change", function(){ clearError(id); });
+    }
+  });
+
+  // ---- conditional branching ----
+  function show(el, on){ if(el) el.classList.toggle("show", !!on); }
+  function updateBranches(){
+    // WhatsApp number input only when it differs from the mobile number
+    var wa = (document.querySelector('input[name="whatsappSame"]:checked')||{}).value;
+    show($("branchWhatsapp"), wa==="No");
+    if(wa){ $("err-whatsappSame").classList.remove("show"); }
+    if(wa!=="No"){ clearError("whatsapp"); }
+
+    // academic record: B.Sc. fields for "Only B.Sc." / "Both", M.Sc. fields for "Only M.Sc." / "Both"
+    var paths = degreePaths();
+    show($("branchBsc"), paths.indexOf("bsc")>-1);
+    show($("branchMsc"), paths.indexOf("msc")>-1);
+    if(paths.length){ $("err-degreesHere").classList.remove("show"); }
+    ["bsc","msc"].forEach(function(p){
+      if(paths.indexOf(p)<0){ [p+"StudentId",p+"Thesis",p+"ThesisOther"].forEach(clearError); }
+    });
+    // "Only M.Sc.": B.Sc. university, B.Sc. department and M.Sc. degree
+    var om = paths.length===1 && paths[0]==="msc";
+    document.querySelectorAll(".msc-only").forEach(function(el){ show(el, om); });
+    if(!om){ clearError("bscUniversity"); clearError("bscDepartment"); }
+    if(!om || answer("mscDegree")){ $("err-mscDegree").classList.remove("show"); }
+    // M.Sc. student ID: required (with *) for "Only M.Sc.", not required for "Both"
+    var bothDegrees = paths.length===2;
+    $("mscStudentIdReq").hidden = bothDegrees;
+    if(bothDegrees){ clearError("mscStudentId"); }
+    ["bsc","msc"].forEach(function(p){
+      var other = val(p+"Thesis")==="Others";
+      show($(p+"ThesisOtherWrap"), other);
+      if(!other){ clearError(p+"ThesisOther"); }
+    });
+
+    // section 03: the degree list opens for "Other degrees: Yes"
+    var hd = answer("hasOtherDegrees");
+    show($("branch-hasOtherDegrees"), hd==="Yes");
+    if(hd){ $("err-hasOtherDegrees").classList.remove("show"); }
+    if(hd!=="Yes"){ $("err-degreeList").classList.remove("show"); }
+    // section 03: details open for each question answered "Yes"
+    Object.keys(YESNO_PARTS).forEach(function(q){
+      var a = answer(q);
+      show($("branch-"+q), a==="Yes");
+      if(a){ $("err-"+q).classList.remove("show"); }
+      if(a!=="Yes"){ YESNO_PARTS[q].forEach(clearError); }
+    });
+    // "Please specify your profession" only for "Others"
+    var otherJob = val("jobProfession")==="Others";
+    show($("jobProfessionOtherWrap"), otherJob);
+    if(!otherJob || answer("currentlyEmployed")!=="Yes"){ clearError("jobProfessionOther"); }
+    // section 04: "Other" ticked -> the other-connections box becomes required
+    show($("devAreasOtherWrap"), otherAreaTicked());
+    if(document.querySelector("#devAreas input:checked")){ $("err-devAreas").classList.remove("show"); }
+    if(!otherAreaTicked()){ clearError("devAreasOther"); }
+  }
+  document.querySelectorAll('input[name="whatsappSame"], input[name="degreesHere"], input[name="mscDegree"], input[name="hasOtherDegrees"], input[name="currentlyEmployed"], select.thesis-field, #jobProfession, #devAreas input[type=checkbox]')
+    .forEach(function(r){ r.addEventListener("change", updateBranches); });
+
+  // ---- rendering ----
+  function fmtDate(iso){
+    try{
+      var d=new Date(iso);
+      return d.toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
+    }catch(e){ return iso; }
+  }
+  function esc(s){ return String(s==null?"":s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];}); }
+
+
+  // ---- CSV (not shown on the page; kept for exporting records once a backend is connected) ----
+  var DEGREE_COLS = [["degree",""],["status","Status"],["university","University"],["department","Department"],
+    ["city","City"],["country","Country"],["researchArea","Research Area"],["supervisor","Supervisor"],["supervisorEmail","Supervisor Email"]];
+  function toCSV(list){
+    var maxDeg = 0;
+    list.forEach(function(r){ maxDeg = Math.max(maxDeg, (r.otherDegrees||[]).length); });
+    var cols = [];   // [header, value getter]
+    FIELDS.forEach(function(f){
+      if(f[0]==="__degrees__"){
+        for(var i=0; i<maxDeg; i++){
+          DEGREE_COLS.forEach(function(c){
+            cols.push(["Degree "+(i+1)+(c[1] ? ": "+c[1] : ""), (function(i, k){ return function(r){ var d=(r.otherDegrees||[])[i]; return d ? d[k] : ""; }; })(i, c[0])]);
+          });
+        }
+      } else {
+        cols.push([f[1], (function(k){ return function(r){ return r[k]; }; })(f[0])]);
+      }
+    });
+    var headers = cols.map(function(c){ return c[0]; });
+    function cell(v){
+      v = (v==null?"":String(v));
+      if(/[",\n\r]/.test(v)){ v = '"'+v.replace(/"/g,'""')+'"'; }
+      return v;
+    }
+    var lines = [headers.map(cell).join(",")];
+    list.forEach(function(r){
+      lines.push(cols.map(function(c){ return cell(c[1](r)); }).join(","));
+    });
+    return "\ufeff" + lines.join("\r\n"); // BOM for Excel/Unicode
+  }
+  function download(filename, text){
+    var blob = new Blob([text], {type:"text/csv;charset=utf-8;"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 500);
+  }
+
+  // ---- toast ----
+  var toastTimer=null;
+  function toast(msg){
+    $("toastMsg").textContent = msg;
+    var t=$("toast"); t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){ t.classList.remove("show"); }, 2600);
+  }
+
+  // ---- reset ----
+  function resetForm(){
+    $("degreeList").innerHTML = "";   // remove all added degrees
+    document.querySelectorAll("input, select, textarea").forEach(function(el){
+      if(el.type==="checkbox"||el.type==="radio"){ el.checked=false; }
+      else if(el.tagName==="SELECT"){ el.selectedIndex=0; }
+      else { el.value=""; }
+    });
+    syncPhone("mobile"); syncPhone("whatsapp");   // country codes back to Bangladesh (+880)
+    updateBranches();
+  }
+
+  // ---- wire up ----
+  $("submitBtn").addEventListener("click", async function(){
+    if(!validate()){
+      // jump to the first problem, including Yes/No and checkbox questions (they have no red-bordered input)
+      var first=document.querySelector(".invalid, .err.show");
+      if(first){
+        var field = first.closest(".field") || first;
+        var target = first.classList.contains("invalid") ? first : field.querySelector("input");
+        if(target) target.focus({preventScroll:true});
+        field.scrollIntoView({behavior:"smooth",block:"center"});
+      }
+      return;
+    }
+    var rec = collect();
+    var btn = $("submitBtn");
+    var label = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = "Submitting\u2026";
+
+    var ok = await sendToSheet(rec);
+
+    btn.disabled = false;
+    btn.textContent = label;
+
+    if(!ok){
+      toast("Could not submit. Please check your connection and try again.");
+      return;
+    }
+
+    var list = await loadRecords();
+    list.unshift(rec);
+    await saveRecords(list);
+    resetForm();
+    toast("Thank you. Your information has been submitted.");
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+
+
+})();
+</script>
+</body>
+</html>
