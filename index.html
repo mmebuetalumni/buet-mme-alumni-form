@@ -515,6 +515,14 @@
                 </div>
                 <div class="err" id="err-{id}Status">Please choose Ongoing or Completed.</div>
               </div>
+              <div class="field full branch" id="{id}ThesisWrap">
+                <label id="lbl-{id}Thesis">Programme type <span class="req">*</span></label>
+                <div class="seg" role="radiogroup" aria-labelledby="lbl-{id}Thesis">
+                  <label><input type="radio" name="{id}Thesis" value="Thesis based"><span>Thesis based</span></label>
+                  <label><input type="radio" name="{id}Thesis" value="Non-thesis based"><span>Non-thesis based</span></label>
+                </div>
+                <div class="err" id="err-{id}Thesis">Please choose thesis based or non-thesis based.</div>
+              </div>
               <div class="field">
                 <label for="{id}University">University <span class="req">*</span></label>
                 <input type="text" id="{id}University" placeholder="Name of the university">
@@ -540,12 +548,12 @@
                 <input type="text" id="{id}Research" placeholder="e.g. Corrosion and electrochemistry">
                 <div class="err" id="err-{id}Research">Please enter your research area / specialization.</div>
               </div>
-              <div class="field">
+              <div class="field branch" id="{id}SupWrap">
                 <label for="{id}Supervisor">Supervisor's name <span class="req">*</span></label>
                 <input type="text" id="{id}Supervisor" placeholder="e.g. Prof. Dr. …">
                 <div class="err" id="err-{id}Supervisor">Please enter the supervisor's name.</div>
               </div>
-              <div class="field">
+              <div class="field branch" id="{id}SupEmailWrap">
                 <label for="{id}SupervisorEmail">Supervisor's email</label>
                 <input type="email" id="{id}SupervisorEmail" placeholder="name@university.edu">
                 <div class="err" id="err-{id}SupervisorEmail">Please enter a valid email address.</div>
@@ -1158,7 +1166,16 @@
   // ---- section 03: degrees added with "+ Add degree" (any number, any type) ----
   var MAX_DEGREES = 3;   // most "other degrees" a person can add
   var degreeCount = 0;   // keeps every degree's ids unique, even after one is removed
-  var DEGREE_REQUIRED = ["University","Department","Country","City","Supervisor"];
+  var DEGREE_REQUIRED = ["University","Department","Country","City"];
+  // A master's degree asks whether it was thesis based; only then is a
+  // supervisor required. Every other degree always has one.
+  function isMasters(type){ return type === "Master's (M.Sc. / M.S.)"; }
+  function needsSupervisor(id){
+    var type = val(id+"Type");
+    if(!type) return false;
+    if(isMasters(type)) return answer(id+"Thesis") === "Thesis based";
+    return true;
+  }
   function degreeEntries(){ return Array.prototype.slice.call(document.querySelectorAll("#degreeList .degree-entry")); }
   function renumberDegrees(){
     degreeEntries().forEach(function(el, i){ el.querySelector(".degree-num").textContent = "Degree " + (i+1); });
@@ -1179,6 +1196,31 @@
     show($(id+"Details"), !!type);
     if(type!=="Others") clearError(id+"TypeOther");
     if(answer(id+"Status")) $("err-"+id+"Status").classList.remove("show");
+
+    // the thesis question belongs to master's degrees only
+    var masters = isMasters(type);
+    show($(id+"ThesisWrap"), masters);
+    if(!masters){
+      var picked = document.querySelector('input[name="'+id+'Thesis"]:checked');
+      if(picked) picked.checked = false;
+      var te = $("err-"+id+"Thesis");
+      if(te) te.classList.remove("show");
+    }
+
+    // the supervisor fields belong to thesis programmes only
+    var need = needsSupervisor(id);
+    show($(id+"SupWrap"), need);
+    show($(id+"SupEmailWrap"), need);
+    if(!need){
+      if($(id+"Supervisor"))      $(id+"Supervisor").value = "";
+      if($(id+"SupervisorEmail")) $(id+"SupervisorEmail").value = "";
+      clearError(id+"Supervisor");
+      clearError(id+"SupervisorEmail");
+    }
+    if(answer(id+"Thesis")){
+      var t = $("err-"+id+"Thesis");
+      if(t) t.classList.remove("show");
+    }
   }
   function addDegree(){
     if(degreeEntries().length >= MAX_DEGREES){ updateAddBtn(); return; }
@@ -1233,6 +1275,7 @@
       return {
         degree: type==="Others" ? val(id+"TypeOther") : type,
         status: answer(id+"Status"),
+        thesis: answer(id+"Thesis"),
         university: val(id+"University"),
         department: val(id+"Department"),
         country: val(id+"Country"),
@@ -1340,8 +1383,10 @@
       if(!type){ setError(id+"Type"); ok=false; return; }
       if(type==="Others" && !val(id+"TypeOther")){ setError(id+"TypeOther"); ok=false; }
       if(!answer(id+"Status")){ $("err-"+id+"Status").classList.add("show"); ok=false; }
+      if(isMasters(type) && !answer(id+"Thesis")){ $("err-"+id+"Thesis").classList.add("show"); ok=false; }
       DEGREE_REQUIRED.forEach(function(k){ if(!val(id+k)){ setError(id+k); ok=false; } });
       if(!val(id+"Research")){ setError(id+"Research"); ok=false; }
+      if(needsSupervisor(id) && !val(id+"Supervisor")){ setError(id+"Supervisor"); ok=false; }
       var em = val(id+"SupervisorEmail");
       if(em && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){ setError(id+"SupervisorEmail"); ok=false; }
     });
@@ -1424,7 +1469,7 @@
 
 
   // ---- CSV (not shown on the page; kept for exporting records once a backend is connected) ----
-  var DEGREE_COLS = [["degree",""],["status","Status"],["university","University"],["department","Department"],
+  var DEGREE_COLS = [["degree",""],["status","Status"],["thesis","Programme Type"],["university","University"],["department","Department"],
     ["city","City"],["country","Country"],["researchArea","Research Area"],["supervisor","Supervisor"],["supervisorEmail","Supervisor Email"]];
   function toCSV(list){
     var maxDeg = 0;
